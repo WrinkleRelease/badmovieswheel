@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.badmoviespinner" name="Bad Movie Spinner" version="1.0.0" provider-name="Your Name">
+<addon id="plugin.program.badmovieswheel" name="Bad Movies Wheel" version="1.0.0" provider-name="Tim Pevey">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
     </requires>
-    <extension point="xbmc.python.script" library="addon.py" />
-        <provides>video</provides>
+    <extension point="xbmc.python.pluginsource" library="addon.py">
+        <provides>executable</provides>
     </extension>
     <extension point="xbmc.addon.metadata">
         <summary lang="en_GB">Randomly selects bad movies to watch</summary>
@@ -18,9 +18,9 @@
         <email></email>
         <source></source>
         <assets>
-            <icon>resources/icon.png</icon>
-            <fanart>resources/fanart.jpg</fanart>
-            <screenshot>resources/screenshot-01.jpg</screenshot>
+            <icon></icon>
+            <fanart></fanart>
+            <screenshot></screenshot>
         </assets>
     </extension>
 </addon>
