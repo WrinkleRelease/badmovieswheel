@@ -1,6 +1,8 @@
 import xbmc
 import xbmcgui
 import xbmcaddon
+import math
+import time
 import os
 
 class MovieWheel(xbmcgui.WindowDialog):
@@ -10,11 +12,11 @@ class MovieWheel(xbmcgui.WindowDialog):
         addon = xbmcaddon.Addon()
         self.addon_path = addon.getAddonInfo('path')
 
-        # Get actual screen dimensions
-        screen_width = self.getWidth()
-        screen_height = self.getHeight()
-        screen_center_x = screen_width // 2
-        screen_center_y = screen_height // 2
+        # Fixed dimensions for 1920x1080
+        screen_width = 1920
+        screen_height = 1080
+        screen_center_x = screen_width // 2   # Should be 960
+        screen_center_y = screen_height // 2  # Should be 540
         
         xbmc.log(f"Screen dimensions: {screen_width}x{screen_height}", xbmc.LOGINFO)
         xbmc.log(f"Screen center: ({screen_center_x}, {screen_center_y})", xbmc.LOGINFO)
@@ -29,21 +31,21 @@ class MovieWheel(xbmcgui.WindowDialog):
         #-------------
         ## MARK: Wheel
         #-------------
-        # Set wheel size to a percentage of screen height
-        wheel_size = int(min(screen_width, screen_height) * 0.7)
-        wheel_x = screen_center_x - (wheel_size // 2)
-        wheel_y = screen_center_y - (wheel_size // 2)
+        wheel_width = 800
+        wheel_height = 800
+        # Center the wheel using screen center coordinates
+        wheel_x = screen_center_x - (wheel_width // 2)    # 960 - 400 = 560
+        wheel_y = screen_center_y - (wheel_height // 2)   # 540 - 400 = 140
 
-        xbmc.log(f"Wheel size: {wheel_size}x{wheel_size}", xbmc.LOGINFO)
+        xbmc.log(f"Wheel dimensions: {wheel_width}x{wheel_height}", xbmc.LOGINFO)
         xbmc.log(f"Wheel position: ({wheel_x}, {wheel_y})", xbmc.LOGINFO)
 
         self.wheel = xbmcgui.ControlImage(
             wheel_x,
             wheel_y,
-            wheel_size,
-            wheel_size,
-            "",
-            aspectRatio=1  # Maintain aspect ratio
+            wheel_width,
+            wheel_height,
+            ""
         )
 
         self.addControl(self.wheel)
@@ -56,7 +58,7 @@ class MovieWheel(xbmcgui.WindowDialog):
         # Center arrow with wheel
         arrow_x = screen_center_x - (arrow_width // 2)
         # Position arrow closer to wheel
-        arrow_y = wheel_y - (arrow_height // 3)
+        arrow_y = wheel_y - (arrow_height // 3)  # Adjusted fraction for better overlap
 
         xbmc.log(f"Arrow dimensions: {arrow_width}x{arrow_height}", xbmc.LOGINFO)
         xbmc.log(f"Arrow position: ({arrow_x}, {arrow_y})", xbmc.LOGINFO)
@@ -74,4 +76,4 @@ class MovieWheel(xbmcgui.WindowDialog):
     def create_wheel(self, movies):
         num_segments = len(movies)
         wheel_image = os.path.join(self.addon_path, 'resources', 'media', f'wheel_{num_segments}.png')
-        self.wheel.setImage(wheel_image, False)  # Ensure no scaling
+        self.wheel.setImage(wheel_image)
